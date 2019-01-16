@@ -1,6 +1,8 @@
 #include "stack.h"
 #include "linked_stack.h"
 
+#include "queue.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -17,18 +19,24 @@
 #define PRINT_TITLE(s) printf(ANSI_COLOR_BLUE s ANSI_COLOR_RESET)
 
 void draw(STACK_ENTRY e) {
-	printf("drawing \"%d\"...\n", e);
+	printf("drawing %d\n", e);
 }
 
 void test_stack(void);
 void test_lstack(void);
-void test_tower_of_hanoi();
 
-int main()
+void test_tower_of_hanoi(void);
+
+void test_queue(void);
+
+int main(void)
 {
 	test_stack();
 	test_lstack();
+
 	test_tower_of_hanoi();
+
+	test_queue();
 }
 
 void test_stack(void)
@@ -117,7 +125,7 @@ void test_lstack(void)
 	PRINT_TITLE("=============================\n");
 }
 
-void test_tower_of_hanoi()
+void test_tower_of_hanoi(void)
 {
 	void move_disks(int count, int start, int finish, int temp);
 
@@ -133,4 +141,58 @@ void move_disks(int count, int start, int finish, int temp)
 		printf("move disk %d from %d to %d\n", count, start, finish);
 		move_disks(count - 1, temp, finish, start);
 	}
+}
+
+void test_queue(void)
+{
+	PRINT_TITLE("===== queue test =====\n");
+	Queue q;
+	QUEUE_ENTRY e;
+	init_queue(&q);
+	for (int i = 0; i < 10; ++i) {
+		e = i;
+		if (!queue_full(&q))
+			enqueue(e, &q);
+		else {
+			fprintf(stderr, "queue is full!\n");
+			exit(1);
+		}
+	}
+
+	for (int i = 0; i < 5; ++i) {
+		dequeue(&e, &q);
+		printf("%d\n", e);
+	}
+
+	for (int i = 0; i < 5; ++i) {
+		e = i;
+		if (!queue_full(&q))
+			enqueue(e, &q);
+		else {
+			fprintf(stderr, "queue is full!\n");
+			exit(1);
+		}
+	}
+
+	while (!queue_empty(&q)) {
+		dequeue(&e, &q);
+		printf("%d\n", e);
+	}
+
+	for (int i = 0; i < 10; ++i) {
+		e = i;
+		if (!queue_full(&q))
+			enqueue(e, &q);
+		else {
+			fprintf(stderr, "queue is full!");
+			exit(1);
+		}
+	}
+
+	traverse_queue(&q, draw);
+
+	clear_queue(&q);
+	printf("queue is %s\n", queue_empty(&q) ? "cleared" : "not cleared");
+
+	PRINT_TITLE("======================\n");
 }
