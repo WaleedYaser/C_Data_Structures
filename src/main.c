@@ -4,6 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+// red not yellow
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+// green not cyan
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
+#define PRINT_TITLE(s) printf(ANSI_COLOR_BLUE s ANSI_COLOR_RESET)
 
 void draw(STACK_ENTRY e) {
 	printf("drawing \"%d\"...\n", e);
@@ -11,16 +22,18 @@ void draw(STACK_ENTRY e) {
 
 void test_stack(void);
 void test_lstack(void);
+void test_tower_of_hanoi();
 
 int main()
 {
 	test_stack();
 	test_lstack();
+	test_tower_of_hanoi();
 }
 
 void test_stack(void)
 {
-	printf("===== stack test =====\n");
+	PRINT_TITLE("===== stack test =====\n");
 	Stack s;
 	STACK_ENTRY e;
 	init_stack(&s);
@@ -57,12 +70,13 @@ void test_stack(void)
 	traverse_stack(&s, draw);
 	clear_stack(&s);
 	printf("stack %s\n", stack_empty(&s) ? "cleared" : "not cleared");
-	printf("======================\n");
+	PRINT_TITLE("======================\n");
+
 }
 
 void test_lstack(void)
 {
-	printf("===== linked stack test =====\n");
+	PRINT_TITLE("===== linked stack test =====\n");
 	LStack ls;
 	LSTACK_ENTRY e;
 	init_lstack(&ls);
@@ -100,5 +114,23 @@ void test_lstack(void)
 
 	clear_lstack(&ls);
 	printf("linked stack %s\n", lstack_empty(&ls) ? "cleared" : "not cleared");
-	printf("=============================\n");
+	PRINT_TITLE("=============================\n");
+}
+
+void test_tower_of_hanoi()
+{
+	void move_disks(int count, int start, int finish, int temp);
+
+	PRINT_TITLE("===== tower of hanoi =====\n");
+	move_disks(3, 1, 3, 2);
+	PRINT_TITLE("==========================\n");
+
+}
+void move_disks(int count, int start, int finish, int temp)
+{
+	if (count > 0) {
+		move_disks(count - 1, start, temp, finish);
+		printf("move disk %d from %d to %d\n", count, start, finish);
+		move_disks(count - 1, temp, finish, start);
+	}
 }
