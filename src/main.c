@@ -2,6 +2,7 @@
 #include "linked_stack.h"
 
 #include "queue.h"
+#include "linked_queue.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,6 +29,7 @@ void test_lstack(void);
 void test_tower_of_hanoi(void);
 
 void test_queue(void);
+void test_linked_queue(void);
 
 int main(void)
 {
@@ -37,6 +39,7 @@ int main(void)
 	test_tower_of_hanoi();
 
 	test_queue();
+	test_linked_queue();
 }
 
 void test_stack(void)
@@ -195,4 +198,58 @@ void test_queue(void)
 	printf("queue is %s\n", queue_empty(&q) ? "cleared" : "not cleared");
 
 	PRINT_TITLE("======================\n");
+}
+
+void test_linked_queue(void)
+{
+	PRINT_TITLE("===== linked queue test =====\n");
+	LQueue lq;
+	LQUEUE_ENTRY e;
+	init_lqueue(&lq);
+	for (int i = 0; i < 10; ++i) {
+		e = i;
+		if (!lqueue_full(&lq))
+			lenqueue(e, &lq);
+		else {
+			fprintf(stderr, "linked queue is full!\n");
+			exit(1);
+		}
+	}
+
+	for (int i = 0; i < 5; ++i) {
+		ldequeue(&e, &lq);
+		printf("%d\n", e);
+	}
+
+	for (int i = 0; i < 5; ++i) {
+		e = i;
+		if (!lqueue_full(&lq))
+			lenqueue(e, &lq);
+		else {
+			fprintf(stderr, "linked queue is full!\n");
+			exit(1);
+		}
+	}
+
+	while (!lqueue_empty(&lq)) {
+		ldequeue(&e, &lq);
+		printf("%d\n", e);
+	}
+
+	for (int i = 0; i < 10; ++i) {
+		e = i;
+		if (!lqueue_full(&lq))
+			lenqueue(e, &lq);
+		else {
+			fprintf(stderr, "linked queue is full!");
+			exit(1);
+		}
+	}
+
+	traverse_lqueue(&lq, draw);
+
+	clear_lqueue(&lq);
+	printf("linked queue is %s\n", lqueue_empty(&lq) ? "cleared" : "not cleared");
+
+	PRINT_TITLE("=============================\n");
 }
