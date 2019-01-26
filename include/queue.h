@@ -1,5 +1,6 @@
-#define QUEUE_ENTRY int
-#define MAX_QUEUE   10
+#include "global.h"
+
+#ifdef LIMITED_MEMORY
 
 typedef struct _Queue {
 	int front;
@@ -7,6 +8,21 @@ typedef struct _Queue {
 	int size;
 	QUEUE_ENTRY entry[MAX_QUEUE];
 } Queue;
+
+#else
+
+typedef struct _QNode {
+	QUEUE_ENTRY 	entry;
+	struct _QNode	*next;
+} QNode;
+
+typedef struct LQueue {
+	QNode 			*front;
+	QNode			*rear;
+	int				size;
+} Queue;
+
+#endif
 
 void init_queue(Queue *pq);
 

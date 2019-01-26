@@ -1,10 +1,25 @@
-#define MAXSTACK	100
-#define STACK_ENTRY int
+#include "global.h"
+
+#ifdef LIMITED_MEMORY
 
 typedef struct _stack {
 	int 			top;
-	STACK_ENTRY		entry[MAXSTACK];
+	STACK_ENTRY		entry[MAX_STACK];
 } Stack;
+
+#else
+
+typedef struct _Stack_Node {
+	STACK_ENTRY		entry;
+	struct _Stack_Node	*next;
+} Stack_Node;
+
+typedef struct _Stack {
+	Stack_Node		*top;
+	int				size;
+} Stack;
+
+#endif
 
 void init_stack(Stack *ps);
 
