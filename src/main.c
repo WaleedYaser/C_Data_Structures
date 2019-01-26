@@ -43,7 +43,11 @@ int main(void)
 
 void test_stack(void)
 {
-	PRINT_TITLE("===== stack test =====\n");
+#ifdef LIMITED_MEMORY
+	PRINT_TITLE("===== stack with array test =====\n");
+#else
+	PRINT_TITLE("===== stack with linked list test =====\n");
+#endif
 	Stack s;
 	int e;
 	init_stack(&s, int);
@@ -91,8 +95,9 @@ void test_stack(void)
 		pop(&c, &s2);
 		printf("%c\n", c);
 	}
-
-	PRINT_TITLE("======================\n");
+	clear_stack(&s2);
+	printf("stack %s\n", stack_empty(&s2) ? "cleared" : "not cleared");
+	PRINT_TITLE("=======================================\n");
 }
 
 void test_tower_of_hanoi(void)

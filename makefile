@@ -1,6 +1,6 @@
 TARGET = test_data_structures
 
-CC = gcc
+CC = gcc -g
 CFLAGS = -Wall -I$(INCDIR)
 
 LINKER = gcc

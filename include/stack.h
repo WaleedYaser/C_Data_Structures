@@ -11,13 +11,14 @@ typedef struct _stack {
 #else
 
 typedef struct _Stack_Node {
-	STACK_ENTRY		entry;
+	void	*entry;
 	struct _Stack_Node	*next;
 } Stack_Node;
 
 typedef struct _Stack {
 	Stack_Node		*top;
 	int				size;
+	int				t_size;
 } Stack;
 
 #endif
