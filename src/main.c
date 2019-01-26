@@ -16,8 +16,8 @@
 
 #define PRINT_TITLE(s) printf(ANSI_COLOR_BLUE s ANSI_COLOR_RESET)
 
-void draw(STACK_ENTRY e) {
-	printf("drawing %d\n", e);
+void draw(int *e) {
+	printf("drawing %d\n", *e);
 }
 
 void draw_stack(int *pe) {
@@ -122,8 +122,8 @@ void test_queue(void)
 {
 	PRINT_TITLE("===== queue test =====\n");
 	Queue q;
-	QUEUE_ENTRY e;
-	init_queue(&q);
+	int e;
+	init_queue(&q, int);
 	for (int i = 0; i < 10; ++i) {
 		e = i;
 		if (!queue_full(&q))
@@ -168,6 +168,20 @@ void test_queue(void)
 
 	clear_queue(&q);
 	printf("queue is %s\n", queue_empty(&q) ? "cleared" : "not cleared");
+
+	Queue q2;
+	init_queue(&q2, char);
+	char *pw = "hello, world";
+	char c;
+	for (int i = 0; pw[i] != '\0'; ++i)
+		enqueue(pw[i], &q2);
+	while(!queue_empty(&q2)) {
+		dequeue(&c, &q2);
+		printf("%c\n", c);
+	}
+
+	clear_queue(&q2);
+	printf("queue is %s\n", queue_empty(&q2) ? "cleared" : "not cleared");
 
 	PRINT_TITLE("======================\n");
 }

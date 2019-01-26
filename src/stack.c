@@ -47,9 +47,8 @@ int stack_size(const Stack *ps)
 
 void clear_stack(Stack *ps)
 {
-	while (ps->top >= 0)
-		free(ps->entry[ps->top--]);
-	ps->top = 0;
+	while (ps->top > 0)
+		free(ps->entry[--ps->top]);
 }
 
 void traverse_stack(Stack *ps, void (*pf)(void *))
