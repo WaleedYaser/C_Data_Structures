@@ -20,6 +20,10 @@ void draw(STACK_ENTRY e) {
 	printf("drawing %d\n", e);
 }
 
+void draw_stack(int *pe) {
+	printf("drawing %d\n", *pe);
+}
+
 void test_stack(void);
 void test_lstack(void);
 
@@ -41,8 +45,8 @@ void test_stack(void)
 {
 	PRINT_TITLE("===== stack test =====\n");
 	Stack s;
-	STACK_ENTRY e;
-	init_stack(&s);
+	int e;
+	init_stack(&s, int);
 	for (int i = 0; i < 5; ++i) {
 		e = i;
 		if (!stack_full(&s))
@@ -73,11 +77,22 @@ void test_stack(void)
 		printf("stack top is: %d\n", e);
 	}
 
-	traverse_stack(&s, draw);
+	traverse_stack(&s, draw_stack);
 	clear_stack(&s);
 	printf("stack %s\n", stack_empty(&s) ? "cleared" : "not cleared");
-	PRINT_TITLE("======================\n");
 
+	Stack s2;
+	char c;
+	init_stack(&s2, char);
+	char *pw = "hello, world";
+	for (int i = 0; pw[i] != '\0'; ++i)
+		push(pw[i], &s2);
+	while(!stack_empty(&s2)) {
+		pop(&c, &s2);
+		printf("%c\n", c);
+	}
+
+	PRINT_TITLE("======================\n");
 }
 
 void test_tower_of_hanoi(void)

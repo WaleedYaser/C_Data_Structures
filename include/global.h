@@ -1,7 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-// #define LIMITED_MEMORY
+#define LIMITED_MEMORY
 
 typedef struct _Element_Type {
 	int year;

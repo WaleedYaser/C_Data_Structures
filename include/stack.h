@@ -3,8 +3,9 @@
 #ifdef LIMITED_MEMORY
 
 typedef struct _stack {
-	int 			top;
-	STACK_ENTRY		entry[MAX_STACK];
+	int		t_size;
+	int 	top;
+	void	*entry[MAX_STACK];
 } Stack;
 
 #else
@@ -21,20 +22,22 @@ typedef struct _Stack {
 
 #endif
 
-void init_stack(Stack *ps);
+void _init_stack(Stack *ps, int z);
+#define init_stack(ps, type) _init_stack(ps, sizeof(type))
 
 /* pre: the stack is initialized and not full */
-void push(STACK_ENTRY e, Stack *ps);
+void _push(void *pe, Stack *ps);
+#define push(e, ps) _push(((void *) &e), ps)
 
 /* pre: the stack is initialized and not empty */
-void pop(STACK_ENTRY *pe, Stack *ps);
+void pop(void *pe, Stack *ps);
 
 int stack_empty(const Stack *ps);
 
 int stack_full(const Stack *ps);
 
 /* pre: the stack is initialized and not empty */
-void stack_top(STACK_ENTRY *pe, const Stack *ps);
+void stack_top(void *pe, const Stack *ps);
 
 /* pre: the stack is initialized */
 int stack_size(const Stack *ps);
@@ -43,4 +46,4 @@ int stack_size(const Stack *ps);
 void clear_stack(Stack *ps);
 
 /* pre: the stack is initialized */
-void traverse_stack(Stack *ps, void (*pf)(STACK_ENTRY));
+void traverse_stack(Stack *ps, void (*pf)(void *));

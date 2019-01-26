@@ -3,18 +3,25 @@
 
 #ifdef LIMITED_MEMORY
 
-void init_stack(Stack *ps)
+#include <stdlib.h>
+#include <string.h>
+
+void _init_stack(Stack *ps, int z)
 {
 	ps->top = 0;
+	ps->t_size = z;
 }
 
-void push(STACK_ENTRY e, Stack *ps)
+void _push(void *pe, Stack *ps)
 {
-	ps->entry[ps->top++] = e;
+	void *ptr = malloc(ps->t_size);
+	memcpy(ptr, pe, ps->t_size);
+	ps->entry[ps->top++] = ptr;
 }
-void pop(STACK_ENTRY *pe, Stack *ps)
+
+void pop(void *pe, Stack *ps)
 {
-	*pe = ps->entry[--ps->top];
+	memcpy(pe, ps->entry[--ps->top], ps->t_size);
 }
 
 int stack_empty(const Stack *ps)
@@ -27,9 +34,9 @@ int stack_full(const Stack *ps)
 	return ps->top >= MAX_STACK;
 }
 
-void stack_top(STACK_ENTRY *pe, const Stack *ps)
+void stack_top(void *pe, const Stack *ps)
 {
-	*pe = ps->entry[ps->top - 1];
+	memcpy(pe, ps->entry[ps->top - 1], ps->t_size);
 }
 
 int stack_size(const Stack *ps)
@@ -42,7 +49,7 @@ void clear_stack(Stack *ps)
 	ps->top = 0;
 }
 
-void traverse_stack(Stack *ps, void (*pf)(STACK_ENTRY))
+void traverse_stack(Stack *ps, void (*pf)(void *))
 {
 	for (int i = ps->top; i > 0; --i)
 		pf(ps->entry[i - 1]);
